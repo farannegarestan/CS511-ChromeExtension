@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
 
-  "name": "Getting started example",
-  "description": "This extension shows a Google Image search result for the current page",
+  "name": "Text Extraction Extension",
+  "description": "This extension extracts text and makes sense of it.",
   "version": "1.0",
 
   "browser_action": {
@@ -13,6 +13,7 @@
     "scripts": ["sample.js"]
   },
   "permissions": [
+  	"http://*/*",
     "activeTab",
     "https://ajax.googleapis.com/",
     "contextMenus"

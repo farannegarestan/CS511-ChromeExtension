@@ -1,14 +1,17 @@
 // A generic onclick callback function.
+
+var host = "aws.faran.me:8080"
 function captureClickHandler(info, tab) {
     console.log("Text: " + info["selectionText"])
-    var newURL = "http://www.youtube.com/watch?v=oHg5SJYRHA0";
-    chrome.tabs.create({ url: newURL });
-
+  
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "https://api.ipify.org?format=json", true);
-    xhttp.send();
+    xhttp.open("POST", "http://"+host+"/ExtractionServer/ProcessorServlet", true);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send("text="+info["selectionText"]);
     xhttp.onload = function() {
         console.log(xhttp.responseText);
+        var newURL = "http://"+host+"/ExtractionServer/ProcessorServlet";
+        chrome.tabs.create({ url: newURL });
     };
 }
 

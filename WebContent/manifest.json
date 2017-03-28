@@ -16,6 +16,7 @@
   	"http://*/*",
     "activeTab",
     "https://ajax.googleapis.com/",
-    "contextMenus"
+    "contextMenus",
+    "activeTab"
   ]
 }

@@ -12,11 +12,16 @@
   "background": {
     "scripts": ["sample.js"]
   },
+   "content_scripts": [{
+    "matches": ["*://*/*"],
+    "js": ["content.js"]
+  }],
   "permissions": [
   	"http://*/*",
+  	"https://*/*",
     "activeTab",
     "https://ajax.googleapis.com/",
     "contextMenus",
-    "activeTab"
+    "tabs"
   ]
 }

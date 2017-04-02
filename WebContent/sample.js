@@ -1,20 +1,17 @@
 // A generic onclick callback function.
 
-var host = "aws.faran.me:8080"
+var host = "localhost:8080"
 function captureClickHandler(info, tab) {
     //console.log("Text: " + info["selectionText"])
-	console.log(info["selectionText"])
+	console.log(info)
     sendText(info["selectionText"])
 }
 
 function captureAllText(info, tab) {
-	chrome.tabs.executeScript({
-	    code: '(' + function() {
-	        return {success: true, html: document.body.textContent};
-	    } + ')();'
-	}, function(result) {
-		console.log(escapeHtml(result[0].html))
-		sendText(escapeHtml(result[0].html));
+	chrome.tabs.sendMessage(tab.id, {text: 'report_back'}, function(dom){
+		var arr = dom.split("||")
+		console.log(arr)
+		sendText(dom)
 	});
 }
 
@@ -29,30 +26,6 @@ function sendText(text) {
         chrome.tabs.create({ url: newURL });
     };
 }
-
-var entityMap = {
-		  '&': '&amp;',
-		  '<': '&lt;',
-		  '>': '&gt;',
-		  '"': '&quot;',
-		  "'": '&#39;',
-		  '/': '&#x2F;',
-		  '`': '&#x60;',
-		  '=': '&#x3D;'
-		};
-
-function escapeHtml (string) {
-  return String(string).replace(/[&<>"'`=\/]/g, function (s) {
-    return entityMap[s];
-  });
-}
-
-chrome.extension.onRequest.addListener(function(request, sender, callback) {
-	console.log("get source called")
-    if (request.action == "getSource") {
-        callback(document.getElementsByTagName('html')[0].innerHTML);
-    }
-});
 
 // Create one test item for each context type.
 chrome.contextMenus.create({"title": "Capture Text", "contexts":["selection"], "onclick": captureClickHandler});

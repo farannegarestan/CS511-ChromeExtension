@@ -1,6 +1,6 @@
 // A generic onclick callback function.
 
-var host = "localhost:8080"
+var host = "aws.faran.me:8080"
 function captureClickHandler(info, tab) {
     //console.log("Text: " + info["selectionText"])
 	console.log(info)

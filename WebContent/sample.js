@@ -1,7 +1,7 @@
 // A generic onclick callback function.
 
 var contextMenuId = "capture-link";
-var host = "localhost:8080"
+var host = "aws.faran.me:8080"
 
 chrome.runtime.onInstalled.addListener(function(details) {
     chrome.contextMenus.removeAll(function() {

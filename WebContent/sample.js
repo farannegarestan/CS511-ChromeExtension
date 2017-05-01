@@ -2,6 +2,7 @@
 
 var contextMenuId = "capture-link";
 var host = "sp17-cs511-09.cs.illinois.edu:8080"
+//var host = "localhost:8080"
 
 chrome.runtime.onInstalled.addListener(function(details) {
     chrome.contextMenus.removeAll(function() {
@@ -13,11 +14,11 @@ chrome.runtime.onInstalled.addListener(function(details) {
     });
 });
 
-function sendLink(linkClass, url) {
+function sendLink(linkClass, url, position) {
 	var xhttp = new XMLHttpRequest();
     xhttp.open("POST", "http://"+host+"/ExtractionServer/ProcessorServlet", true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhttp.send("url="+encodeURIComponent(url)+"&linkClass="+encodeURIComponent(linkClass));
+    xhttp.send("url="+encodeURIComponent(url)+"&linkClass="+encodeURIComponent(linkClass)+"&position="+position);
     xhttp.onload = function() {
         var newURL = "http://"+host+"/ExtractionServer/ProcessorServlet";
         chrome.tabs.create({ url: newURL });
@@ -38,7 +39,10 @@ function onClickedListener(info, tab) {
                 //chrome.tabs.update(tab.id, {url: response})
             	console.log(response);
             	console.log(tab.url);
-            	sendLink(response, tab.url)
+            	if (tab.url.includes("bestbuy"))
+            		sendLink(response, tab.url, "div")
+            	else
+            		sendLink(response, tab.url, "anchor")
                 // Overly complex way to copy the URL to the clipboard:
                 /*var urlTextArea = document.createElement('textarea');
                 urlTextArea.value = response;

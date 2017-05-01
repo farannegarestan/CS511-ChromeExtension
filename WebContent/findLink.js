@@ -7,6 +7,15 @@ function getAnchorBefore(node) {
     ).stringValue;
 }
 
+function getDivBefore(node) {
+    return document.evaluate(
+        "((./ancestor-or-self::div|./preceding::*)/@*[name()='class'])[last()]",
+        node,
+        null,
+        XPathResult.STRING_TYPE
+    ).stringValue;
+}
+
 function onMessageListener(message, sender, sendResponse) {
     chrome.extension.onMessage.removeListener(onMessageListener);
     if (sender.id != chrome.runtime.id){
@@ -23,7 +32,10 @@ function onMessageListener(message, sender, sendResponse) {
         if (!selection)
             return;
 
-        result_url = getAnchorBefore(selection.getRangeAt(0).startContainer);
+        if (message.pageUrl.includes("bestbuy"))
+        	result_url = getDivBefore(selection.getRangeAt(0).startContainer);
+        else
+        	result_url = getAnchorBefore(selection.getRangeAt(0).startContainer);
         sendResponse(result_url);
     } else {
         console.log("Unexpected message", message);
